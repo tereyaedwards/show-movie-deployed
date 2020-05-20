@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Team</title>
+</head>
+<body bgcolor="#2f4f4f">
+<H1 style="color:white">Enter your fav show </H1> <br>
+<form action="/search/saving" method=POST">
+    {{ form.movie_title }}<br>
+    {{ form.submit() }}
+</form>
+</body>
+</html>
+{% endblock %}

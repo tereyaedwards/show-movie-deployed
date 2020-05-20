@@ -11,6 +11,10 @@ class LoginForm(FlaskForm):
     submit = SubmitField('Sign In')
 
 
+class IndexForm(FlaskForm):
+    movie_title = StringField('Title Search', validators=[DataRequired()])
+    submit = SubmitField('Search')
+
 class RegistrationForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
     email = StringField('Email', validators=[DataRequired(), Email()])
