@@ -4,7 +4,6 @@
     <list default="true" id="a3cc13ff-797f-41d1-a9b5-0de5e0475bdf" name="Default Changelist" comment="">
       <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/templates/display.html" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/app/templates/index2.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/flask_tut.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/flask_tut.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
@@ -12,6 +11,7 @@
       <change beforePath="$PROJECT_DIR$/app/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/forms.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/display.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/display.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/config.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/microblog.py" beforeDir="false" afterPath="$PROJECT_DIR$/microblog.py" afterDir="false" />
     </list>
@@ -86,7 +86,7 @@
       <option name="presentableId" value="Default" />
       <updated>1568750434685</updated>
       <workItem from="1568750435777" duration="24843000" />
-      <workItem from="1589995214029" duration="8991000" />
+      <workItem from="1589995214029" duration="13891000" />
     </task>
     <servers />
   </component>

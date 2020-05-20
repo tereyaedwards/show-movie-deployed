@@ -24,7 +24,7 @@ def saving():
         # 1st API call
         url = "https://imdb8.p.rapidapi.com/title/find"
 
-        # fx this it needs to be dynamic!!!
+        # gets show from form entry
         show_to_search = request.values.get('movie_title')
         querystring = {"q": show_to_search}
 
@@ -35,20 +35,21 @@ def saving():
 
         response = requests.request("GET", url, headers=headers, params=querystring).json()
 
-        # Grabbing Tconst and title from API call
+        # Grabbing Tconst, title, imageURL from API call
         tconst = response['results'][0]['id'].split('/')[2]
         title = response['results'][0]['title']
+        image_url = response['results'][0]['image']['url']
 
 
         # check if show info is already in DB if not then add it
         name_exists = db.session.query(db.exists().where(Movies.tconst == tconst)).scalar()
         if not name_exists:
-            movie_info = Movies(tconst=tconst, title=title)
+            movie_info = Movies(tconst=tconst, title=title, image_url=image_url)
             db.session.add(movie_info)
             db.session.commit()
 
 
-        # 2nd API Call
+        # 2nd API Call to "get similar show"
         tconst_url = "https://imdb8.p.rapidapi.com/title/get-more-like-this"
 
         tconst_querystring = {"currentCountry": "US", "purchaseCountry": "US", "tconst": tconst}
@@ -60,44 +61,43 @@ def saving():
 
         tconst_response = requests.request("GET", tconst_url, headers=tconst_headers, params=tconst_querystring).json()
 
-        output_list = []
-        for x in tconst_response:
-            output_list.append(x.split('/')[2])
+        # Gets responses, takes 1st element, splits and takes the tconstant
+        # of show that is similar to initially searched show
+        similar_show_tconst = tconst_response[0].split('/')[2]
 
-        output_list = output_list[:3]
+        # if similar_show (tconst) is in DB
+        # query info from DB instead of calling API
+        name_exists = db.session.query(db.exists().where(Movies.tconst == similar_show_tconst)).scalar()
+        if name_exists:
+            title_name = Movies.query.filter_by(tconst=similar_show_tconst).first()
+            similar_show = title_name.tconst
+            return render_template('display.html', title1=similar_show)
 
-        # Gets show that is similar to initially searched show
-        similar_show1 = output_list[0]
+        else:
+            # 3rd API call only if needed
+            final_url = "https://imdb8.p.rapidapi.com/title/get-meta-data"
 
+            final_querystring = {"region": "US", "ids": similar_show_tconst}
 
-        # 3rd API call
-        final_url = "https://imdb8.p.rapidapi.com/title/get-meta-data"
-
-        final_querystring = {"region": "US", "ids": similar_show1}
-
-        final_headers = {'x-rapidapi-host': "imdb8.p.rapidapi.com",
+            final_headers = {'x-rapidapi-host': "imdb8.p.rapidapi.com",
                              'x-rapidapi-key': "5a64743a7bmsh79b17ce5d033775p102796jsneae2a4334407"}
 
-        final_response = requests.request("GET", final_url,
+            final_response = requests.request("GET", final_url,
                                               headers=final_headers,
                                               params=final_querystring).json()
 
-        similar_show_title1 = final_response[similar_show1]['title']['title']
-        similar_show_image_url = final_response[similar_show1]['title']['image']['url']
+            similar_show_title1 = final_response[similar_show_tconst]['title']['title']
+            similar_show_image_url = final_response[similar_show_tconst]['title']['image']['url']
 
-        # check if show info is already in DB if not then add it
-        # name_exists = db.session.query(db.exists().where(Movies.tconst == tconst)).scalar()
-        # if not name_exists:
-        #     movie_info = Movies(tconst=tconst, title=title)
-        #     db.session.add(movie_info)
-        #     db.session.commit()
+            # Save this similar show in DB too to reduce the amount of overall API calls used
+            # check if show info is already in DB if not then add it
+            name_exists = db.session.query(db.exists().where(Movies.tconst == similar_show_tconst)).scalar()
+            if not name_exists:
+                similar_show_info = Movies(tconst=similar_show_tconst, title=similar_show_title1, image_url=similar_show_image_url)
+                db.session.add(similar_show_info)
+                db.session.commit()
 
-
-    return render_template('display.html', title1=similar_show_title1)
-
-# app.route('/display')
-# def display():
-#     return
+    return render_template('display.html', title1=similar_show_title1, image_link=similar_show_image_url)
 
 
 
