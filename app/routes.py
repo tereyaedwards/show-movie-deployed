@@ -70,8 +70,9 @@ def saving():
         name_exists = db.session.query(db.exists().where(Movies.tconst == similar_show_tconst)).scalar()
         if name_exists:
             title_name = Movies.query.filter_by(tconst=similar_show_tconst).first()
-            similar_show = title_name.tconst
-            return render_template('display.html', title1=similar_show)
+            similar_show = title_name.title
+            similar_url = title_name.image_url
+            return render_template('display.html', title1=similar_show, image_link=similar_url)
 
         else:
             # 3rd API call only if needed
