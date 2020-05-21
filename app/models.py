@@ -24,7 +24,8 @@ class User(UserMixin, db.Model):
 
 class Movies(db.Model):
     __tablename__ = 'movies'
-    tconst = db.Column(db.String(64), primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
+    tconst = db.Column(db.String(64))
     title = db.Column(db.String(64))
     plot = db.Column(db.String(255))
 

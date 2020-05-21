@@ -35,16 +35,29 @@ def saving():
 
         response = requests.request("GET", url, headers=headers, params=querystring).json()
 
-        # Grabbing Tconst, title, imageURL from API call
+        # Grabbing Tconst, title from API call
         tconst = response['results'][0]['id'].split('/')[2]
         title = response['results'][0]['title']
-        #image_url = response['results'][0]['image']['url']
+        # Grab plot
+        plot_url = "https://imdb8.p.rapidapi.com/title/get-plots"
+
+        plot_querystring = {"tconst": tconst}
+
+        plot_headers = {'x-rapidapi-host': "imdb8.p.rapidapi.com",
+                         'x-rapidapi-key': "5a64743a7bmsh79b17ce5d033775p102796jsneae2a4334407"}
+
+        plot_response = requests.request("GET", plot_url,
+                                          headers=plot_headers,
+                                          params=plot_querystring).json()
+
+        plot = plot_response['plots'][1]['text']
+
 
 
         # check if show info is already in DB if not then add it
         name_exists = db.session.query(db.exists().where(Movies.tconst == tconst)).scalar()
         if not name_exists:
-            movie_info = Movies(tconst=tconst, title=title)
+            movie_info = Movies(tconst=tconst, title=title, plot=plot)
             db.session.add(movie_info)
             db.session.commit()
 
@@ -71,8 +84,8 @@ def saving():
         if name_exists:
             title_name = Movies.query.filter_by(tconst=similar_show_tconst).first()
             similar_show = title_name.title
-            similar_url = title_name.image_url
-            return render_template('display.html', title1=similar_show, plot=similar_url)
+            similar_plot = title_name.plot
+            return render_template('display.html', title1=similar_show, plot=similar_plot)
 
         else:
             # 3rd API call only if needed
