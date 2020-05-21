@@ -50,7 +50,7 @@ def saving():
                                           headers=plot_headers,
                                           params=plot_querystring).json()
 
-        plot = plot_response['plots'][1]['text']
+        plot = plot_response['plots'][0]['text']
 
 
 
@@ -101,7 +101,7 @@ def saving():
                                               params=final_querystring).json()
 
             similar_show_title1 = final_response['base']['title']
-            similar_show_plot = final_response['plots'][1]['text']
+            similar_show_plot = final_response['plots'][0]['text']
 
             # Save this similar show in DB too to reduce the amount of overall API calls used
             # check if show info is already in DB if not then add it
