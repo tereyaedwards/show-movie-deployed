@@ -26,7 +26,7 @@ class Movies(db.Model):
     __tablename__ = 'movies'
     tconst = db.Column(db.String(64), primary_key=True)
     title = db.Column(db.String(64))
-    image_url = db.Column(db.String(255))
+    plot = db.Column(db.String(255))
 
 
 @login.user_loader
