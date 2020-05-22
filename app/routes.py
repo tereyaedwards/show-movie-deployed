@@ -1,5 +1,5 @@
 from flask import render_template, flash, redirect, url_for, request
-from app import app, db
+from app import application, db
 from app.forms import LoginForm, RegistrationForm, IndexForm
 from flask_login import current_user, login_user, logout_user,login_required
 from app.models import User, Movies
@@ -7,15 +7,15 @@ from werkzeug.urls import url_parse
 import requests
 
 
-@app.route('/')
-@app.route('/index')
+@application.route('/')
+@application.route('/index')
 @login_required
 def index():
     form = IndexForm()
     return render_template('index2.html', title='Home', form=form)
 
 
-@app.route('/search/saving', methods=['GET','POST'])
+@application.route('/search/saving', methods=['GET','POST'])
 def saving():
     form = IndexForm()
 
@@ -115,7 +115,7 @@ def saving():
 
 
 
-@app.route('/login', methods=['GET', 'POST'])
+@application.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
         return redirect(url_for('index'))
@@ -133,13 +133,13 @@ def login():
     return render_template('login.html', title='Sign In', form=form)
 
 
-@app.route('/logout')
+@application.route('/logout')
 def logout():
     logout_user()
     return redirect(url_for('index'))
 
 
-@app.route('/register', methods=['GET', 'POST'])
+@application.route('/register', methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:
         return redirect(url_for('index'))

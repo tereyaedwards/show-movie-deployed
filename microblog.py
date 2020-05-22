@@ -1,9 +1,9 @@
-from app import app, db
+from app import application, db
 from app.models import User, Movies
 
 db.create_all()
 
 
-@app.shell_context_processor
+@application.shell_context_processor
 def make_shell_context():
-    return {'db': db, 'Movies':Movies}
+    return {'db': db, 'Movies': Movies}
